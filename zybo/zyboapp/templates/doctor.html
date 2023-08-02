@@ -1,0 +1,162 @@
+<html>
+  <head>
+    <style>
+      *{
+  margin:0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+body{
+ background: url('https://inspirationfeed.com/wp-content/uploads/2016/08/mobile_wallpaper_by_maria_shanina-min.png') no-repeat;
+  background-size: cover;
+}
+
+.a{
+  max-width:500px;
+  width:100%;
+  background:#fff;
+  margin:20px auto;
+  padding:30px;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.125);
+}
+
+.a .title{
+  font-size:24px;
+  font-weight: 700;
+  margin-bottom:25px;
+  color: #fex107;
+  text-transform: uppercase;
+  text-align:center;
+}
+
+.a .form{
+  width:100%;
+}
+
+.a .form .input_field{
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.a .form .input_field label{
+  width:200px;
+  color:#757575;
+  margin-right:10px;
+  font-size: 14px;
+}
+
+.a .form .input_field .input{
+  width:100%;
+    outline:none;
+  border:1px solid #d5dbd9;
+  font-size: 15px;
+  padding: 8px 10px;
+  border-radius: 3px;
+  transtion: all 0.3s ease;
+}
+
+.a .form .input_field .custom_select{
+  position: relative;
+  width:100%;
+  height: 37px;
+}
+
+.a .form .input_field .custom_select select{
+  -webkit-appearance:none;
+  appearance:none;
+  border:1px solid #d5dbd9;
+  width:100%;
+  height:100;
+  padding:8px;
+  border-radius:3px;
+  outline:none;
+}
+
+.a .form .input_field .btn{
+  width:100%;
+   padding:8px 10px;
+  font-size: 15px;
+  border 0;
+  background:#800020;
+  color:#fff;
+  cursor:pointer;
+  border-radius:3px;
+  outline:none;
+}
+
+.a .form .input_field .btn:hover{
+  background:#A52A2A;
+}
+
+@media(max-width:420px){
+  .a .form .input_field{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+   .a .form .input_field label{
+     margin-bottom:5px;
+}
+  .a .form .input_field.terms{
+    flex-direction:row;
+  }
+
+
+
+
+
+
+    </style>
+    <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+  <title> Registration Form </title>
+    <link rel="stylesheet" href=style.css">
+  </head>
+
+  <body>
+  <form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div class ="a">
+      <div class ="title">
+        Add doctor
+      </div>
+
+      <div class = "form">
+        <div class = "input_field">
+          <label>Doctor Name</label>
+          <input type="text" class="input" name="name">
+        </div>
+
+
+         <div class = "input_field">
+          <label>Department</label>
+
+             <select name="department">
+                 <option >Select</option>
+                 {% for results in depart %}
+                <option >{{results.department}}</option>
+                 {% endfor %}
+              </select>
+
+        </div>
+
+         <div class = "input_field">
+          <label>Photo</label>
+          <input type="file" class="input" name="photo">
+        </div>
+
+
+        <div class="input_field">
+          <label>qualification</label>
+          <input type="text" class="input" name="qualification">
+        </div>
+
+        <div class = "input_field">
+         <input type ="submit" value="Register" class ="btn">
+       </div>
+
+        </div>
+      </div>
+  </form>
+  </body>
+</html>
