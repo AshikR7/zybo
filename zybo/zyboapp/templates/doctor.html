@@ -133,8 +133,8 @@ body{
 
              <select name="department">
                  <option >Select</option>
-                 {% for results in depart %}
-                <option >{{results.department}}</option>
+                 {% for i in depart %}
+                <option >{{i.department}}</option>
                  {% endfor %}
               </select>
 
@@ -158,5 +158,6 @@ body{
         </div>
       </div>
   </form>
+
   </body>
 </html>

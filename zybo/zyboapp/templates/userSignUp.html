@@ -1,4 +1,4 @@
- <html>
+<html>
 {% load static %}
   <head>
     <style>
@@ -263,17 +263,31 @@
     </style>
   </head>
   <body style="background-image: url({% static 'signUp/registerBg2.jpg' %})">
+   {% if message %}
+
+      {% for message in message %}
+      <div class="alert alert-info">
+      {{ message }}
+        </div>
+      {% endfor%}
+
+  {% endif %}
 
  <div class="background">
           <div class="shape"></div>
           <div class="shape"></div>
       </div>
       <form method="post" enctype="multipart/form-data">{% csrf_token %}
+          <h3>Join Us</h3>
+          <label >Username</label>
+          <input type="text" name="username" required />
           <label >Email</label>
           <input type="email" name="email" required />
           <label >Password</label>
           <input type="password" name="password" required />
-          <button  type="submit">Login</button>
+          <button  type="submit">Sign Up</button>
+          <div class="login">All Ready Have Account? <a href="/zybo/userlogin/"><b>Login</b></a></div>
+
       </form>
 
 

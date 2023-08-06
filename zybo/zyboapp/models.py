@@ -17,7 +17,7 @@ class departmentModel(models.Model):
 class doctorModel(models.Model):
     name = models.CharField(max_length=30)
     department = models.CharField(max_length=30)
-    photo = models.ImageField(upload_to='static/doctors')
+    photo = models.ImageField(upload_to='zyboapp/static/doctors')
     qualification = models.CharField(max_length=30)
 
 class appointmentsModel(models.Model):
@@ -29,7 +29,7 @@ class appointmentsModel(models.Model):
     time = models.TimeField()
     department = models.CharField(max_length=30)
     doctor = models.CharField(max_length=30)
-    status = models.CharField(max_length=20,default='pending', choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected')])
+    status = models.CharField(max_length=20,default='Pending', choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected')])
 
 class profile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)

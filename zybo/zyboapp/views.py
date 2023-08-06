@@ -14,8 +14,6 @@ from django.views import generic
 from django.contrib.auth import logout
 from zybo.settings import EMAIL_HOST_USER
 
-def index(request):
-    return render(request,'Index.html')
 def superProfile(request):
     return render(request,'superProfile.html')
 def adminProfile(request):
@@ -112,6 +110,7 @@ def department(request):
             return redirect(adminProfile)
     return render(request,'department.html')
 def doctor(request):
+    depart = departmentModel.objects.all()
     if request.method=='POST':
         a=doctorForm(request.POST,request.FILES)
         if a.is_valid():
@@ -121,12 +120,8 @@ def doctor(request):
             ql=a.cleaned_data['qualification']
             b=doctorModel(name=nm,department=dp,photo=ph,qualification=ql)
             b.save()
-            return render(adminProfile)
-    return render(request,'doctor.html')
-
-def  departmentlist(request):
-    department=departmentModel.objects.all()
-    return render(request,'doctor.html',{'depart':department})
+            return redirect(adminProfile)
+    return render(request,'doctor.html',{'depart':depart})
 
 class doctorlist(generic.ListView):
     model = doctorModel
@@ -155,7 +150,7 @@ def signUpView(request):
         profile_obj.save()
         sendMailSignUp(email,auth_token)
         return render(request,'success.html')
-    return render(request,'signUp.html')
+    return render(request,'userSignUp.html')
 def sendMailSignUp(email,auth_token):
     subject="your account has been varified"
     message=f'click the link to verify your account http://127.0.0.1:8000/zybo/verify/{auth_token}'
@@ -196,9 +191,20 @@ def userLogin(request):
         return redirect(appointments)
     return render(request,'userLogin.html')
 
+
 def appointments(request):
+    depart = departmentModel.objects.all()
+    doctor = doctorModel.objects.all()
+    appointmentList=appointmentsModel.objects.all()
+    apDate=[]
+    apTime=[]
+    for i in appointmentList:
+        adt = i.date
+        apDate.append(adt)
+        atm=i.time
+        apTime.append(atm)
     if request.method=='POST':
-        a=doctorForm(request.POST,request.FILES)
+        a=appointmentsForm(request.POST,request.FILES)
         if a.is_valid():
             nm=a.cleaned_data['name']
             em=a.cleaned_data['email']
@@ -208,15 +214,46 @@ def appointments(request):
             tm = a.cleaned_data['time']
             dp = a.cleaned_data['department']
             do = a.cleaned_data['doctor']
+            if dt in apDate and tm in apTime:
+                return HttpResponse("please select another Date or Time")
+
             b=appointmentsModel(name=nm,email=em,phone=ph,place=pl,date=dt,time=tm,department=dp,doctor=do)
             b.save()
-            return render(adminProfile)
-    return render(request,'appointment.html')
+            status(em)
+            return HttpResponse("success")
+    return render(request,'appointment.html',{'depart':depart,'doctor':doctor},)
 
-def doctor_list(request):
-    doctor=doctorModel.objects.all()
-    return render(request,'doctor.html',{'doctor':doctor})
+def status(email):
+    subject="Status Upadate"
+    message=f'Current status is pending, please wait for new mail from Admin'
+    email_from=EMAIL_HOST_USER
+    recipient=[email]
+    send_mail(subject,message,email_from,recipient)
+
 
 def appointment_list(request):
     list=appointmentsModel.objects.all()
     return render(request,'appointmentlist.html',{'appointment':list})
+
+def singleAppointmentList(request,id):
+    list = appointmentsModel.objects.filter(id=id)
+    return render(request, 'singleAppointmentList.html', {'appointment': list})
+
+def statusChange(request,id):
+    a=appointmentsModel.objects.get(id=id)
+    em=a.email
+    currentStatus=a.status
+    if request.method=='POST':
+        a.status=request.POST.get('status')
+        s=a.status
+        a.save()
+        newStatus(em,s)
+        return redirect(appointment_list)
+    return render(request,'changeStatus.html',{'new':a,'current':currentStatus,})
+
+def newStatus(email,s):
+    subject="Status Upadate"
+    message=f'Status is changed to {s}'
+    email_from=EMAIL_HOST_USER
+    recipient=[email]
+    send_mail(subject,message,email_from,recipient)

@@ -15,14 +15,16 @@
     <title>Title</title>
 </head>
 <body>
-<div class="w-50 p-3 center ">
+<div class="w-75 p-3 center ">
 <table class="table  table-dark table-hover">
    <thead>
     <tr>
       <th scope="col">Name</th>
+      <th scope="col">Email</th>
       <th scope="col">Doctor</th>
-      <th scope="col">status</th>
-      <th scope="col">View</th>
+      <th scope="col">Date</th>
+      <th scope="col">Time</th>
+      <th scope="col">Current/Change Status</th>
     </tr>
   </thead>
   <tbody>
@@ -30,9 +32,11 @@
     <tr>
 
       <td>{{i.name}}</td>
-        <td>{{i.doctor}}</td>
-      <td>{{i.status}}</td>
-        <td><a href="/zybo/singleappointment/{{i.id}}">view</a></td>
+      <td>{{i.email}}</td>
+      <td>{{i.doctor}}</td>
+      <td>{{i.date}}</td>
+      <td>{{i.time}}</td>
+        <td><a href="/zybo/changestatus/{{i.id}}">{{i.status}}</a></td>
     </tr>
      {% endfor %}
   </tbody>

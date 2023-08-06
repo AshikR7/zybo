@@ -1,11 +1,11 @@
 from django.urls import path
 from .views import *
 urlpatterns=[
-    path('index/',index),
     path('superregister/',superRegister),
     path('superlogin/',superLogin),
     path('superprofile/',superProfile),
     path('adminregister/',adminRegister),
+    path('verify/<auth_token>',verify),
     path('adminlogin/',adminLogin),
     path('adminprofile/',adminProfile),
     path('adminlist/',adminList.as_view(),name='adminlist'),
@@ -14,8 +14,11 @@ urlpatterns=[
     path('department/',department),
     path('doctor/',doctor),
     path('signup/',signUpView),
-    path('verify/<auth_token>',verify),
-    path('appointment/',appointments),
-    path('appointmentlist/',appointment_list)
+    path('userlogin/',userLogin),
+    path('appointment/',appointments,),
+    path('appointmentlist/',appointment_list),
+    path('singleappointment/<int:id>',singleAppointmentList),
+    path('changestatus/<int:id>',statusChange),
+
 
 ]
